@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stillness | Focus & Meditation Bell</title>
+<style>
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  color:#e9eee6;
+  background:radial-gradient(ellipse at top,#263b3b,#101b1b 75%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+.container {
+  width:100%;
+  max-width:480px;
+  text-align:center;
+}
+.brand {
+  letter-spacing:5px;
+  font-size:15px;
+  margin-bottom:35px;
+  color:#c4d7bd;
+}
+h1 { font-weight:300; font-size:30px; }
+.subtitle { color:#a7b8ad; font-size:14px; }
+.modes {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:25px 0;
+}
+button,select {
+  cursor:pointer;
+  font-size:14px;
+}
+.mode,.secondary {
+  border:1px solid #526b61;
+  background:transparent;
+  color:white;
+  border-radius:30px;
+  padding:10px 20px;
+}
+.mode.active {
+  background:#d0ddc8;
+  color:#20332c;
+}
+.orb {
+  width:190px;
+  height:190px;
+  margin:35px auto;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#91b6a0,#315b50,#1b3934);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 60px #78aa8c35;
+}
+.orb.running {
+  animation:breathe 6s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% {transform:scale(.94)}
+  50% {transform:scale(1.06)}
+}
+.clock {
+  font-size:38px;
+  font-weight:300;
+}
+.status { color:#c9d9ca; font-size:14px; }
+.next { color:#a7b8ad; font-size:13px; margin-top:10px; }
+.progress {
+  height:4px;
+  background:#ffffff20;
+  margin:30px 0;
+  border-radius:10px;
+  overflow:hidden;
+}
+.progress-bar {
+  height:100%;
+  width:0%;
+  background:#c7dbc3;
+}
+.controls {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:18px;
+}
+.start {
+  background:#d0ddc8;
+  color:#1b3029;
+  border:0;
+  border-radius:30px;
+  padding:15px 35px;
+  font-weight:bold;
+}
+.secondary {
+  width:45px;
+  height:45px;
+  padding:0;
+  font-size:20px;
+}
+.settings {
+  margin-top:35px;
+  padding:22px;
+  border-radius:18px;
+  background:#ffffff09;
+  border:1px solid #ffffff14;
+  text-align:left;
+}
+.settings h3 { font-size:15px; }
+label {
+  display:block;
+  color:#a7b8ad;
+  font-size:12px;
+  margin:15px 0 8px;
+}
+select {
+  width:100%;
+  padding:12px;
+  background:#243a35;
+  color:white;
+  border:1px solid #536a5e;
+  border-radius:10px;
+}
+.quote {
+  margin-top:30px;
+  color:#c7d8c5;
+  font-style:italic;
+  font-size:14px;
+}
+.toast {
+  color:#a7b8ad;
+  font-size:12px;
+  margin-top:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="brand">◉ STILLNESS</div>
+
+  <h1>Find your stillness.</h1>
+  <p class="subtitle">Let go of everything. Return to the moment.</p>
+
+  <div class="modes">
+    <button class="mode active" id="focusMode">◈ Focus</button>
+    <button class="mode" id="meditationMode">☯ Meditation</button>
+  </div>
+
+  <div class="orb" id="orb">
+    <div>
+      <div style="font-size:11px;letter-spacing:3px">BREATHE</div>
+      <div class="clock" id="clock">00:00</div>
+    </div>
+  </div>
+
+  <div class="status" id="status">Ready when you are</div>
+  <div class="next" id="next">Your next bell is in 5 seconds</div>
+
+  <div class="progress">
+    <div class="progress-bar" id="progress"></div>
+  </div>
+
+  <div class="controls">
+    <button class="secondary" id="reset">↺</button>
+    <button class="start" id="start">Start session</button>
+    <button class="secondary" id="sound">♪</button>
+  </div>
+
+  <div class="settings">
+    <h3>🔔 Bell Settings</h3>
+
+    <label>Play bell every</label>
+    <select id="interval">
+      <option value="5" selected>5 seconds</option>
+      <option value="10">10 seconds</option>
+      <option value="30">30 seconds</option>
+      <option value="60">1 minute</option>
+      <option value="120">2 minutes</option>
+      <option value="300">5 minutes</option>
+      <option value="600">10 minutes</option>
+      <option value="900">15 minutes</option>
+      <option value="1200">20 minutes</option>
+      <option value="1800">30 minutes</option>
+    </select>
+
+    <label>Session length</label>
+    <select id="duration">
+      <option value="0">No time limit</option>
+      <option value="300">5 minutes</option>
+      <option value="600">10 minutes</option>
+      <option value="900">15 minutes</option>
+      <option value="1200" selected>20 minutes</option>
+      <option value="1800">30 minutes</option>
+      <option value="2700">45 minutes</option>
+      <option value="3600">60 minutes</option>
+    </select>
+
+    <label>Bell volume</label>
+    <select id="volume">
+      <option value="0.15">Soft</option>
+      <option value="0.3" selected>Medium</option>
+      <option value="0.5">Loud</option>
+    </select>
+  </div>
+
+  <div class="quote">
+    "The quieter you become, the more you can hear."
+  </div>
+
+  <div class="toast" id="toast">
+    Your peace begins with one moment.
+  </div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let running = false;
+let elapsed = 0;
+let nextBell = 5;
+let lastTime = 0;
+let animation = null;
+let soundOn = true;
+let audio = null;
+let mode = "focus";
+
+function interval() {
+  return Number($("interval").value);
+}
+
+function duration() {
+  return Number($("duration").value);
+}
+
+function formatTime(seconds) {
+  seconds = Math.floor(seconds);
+  let m = Math.floor(seconds / 60);
+  let s = seconds % 60;
+
+  return String(m).padStart(2,"0") + ":" +
+         String(s).padStart(2,"0");
+}
+
+// Tibetan-inspired soft electronic bell
+function playBell() {
+  if (!soundOn) return;
+
+  try {
+    audio = audio || new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+
+    if (audio.state === "suspended") audio.resume();
+
+    const now = audio.currentTime;
+    const frequencies = [523.25,783.99,1046.5,1567.98];
+
+    frequencies.forEach((frequency,index) => {
+      const oscillator = audio.createOscillator();
+      const gain = audio.createGain();
+
+      oscillator.type = "sine";
+      oscillator.frequency.value = frequency;
+
+      const start = now + index * 0.035;
+      const volume = Number($("volume").value);
+
+      gain.gain.setValueAtTime(0.0001,start);
+      gain.gain.exponentialRampToValueAtTime(
+        volume * (0.35-index*0.055),
+        start+0.045
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,start+2.4
+      );
+
+      oscillator.connect(gain);
+      gain.connect(audio.destination);
+
+      oscillator.start(start);
+      oscillator.stop(start+2.5);
+    });
+
+  } catch(error) {
+    $("toast").textContent = "Unable to play bell sound.";
+  }
+}
+
+function updateDisplay() {
+  $("clock").textContent = formatTime(elapsed);
+
+  let remaining = Math.max(0,nextBell-elapsed);
+
+  $("next").textContent =
+    "Your next bell is in " +
+    (remaining < 60
+      ? Math.ceil(remaining) + " seconds"
+      : Math.floor(remaining/60) + "m " +
+        Math.ceil(remaining%60) + "s");
+
+  let total = duration();
+
+  let percentage = total
+    ? Math.min(100,elapsed/total*100)
+    : 0;
+
+  $("progress").style.width = percentage + "%";
+}
+
+function stopSession() {
+  running = false;
+  cancelAnimationFrame(animation);
+
+  $("start").textContent = "Resume session";
+  $("orb").classList.remove("running");
+  $("status").textContent = "Session paused";
+}
+
+function tick(timestamp) {
+  if (!running) return;
+
+  if (!lastTime) lastTime = timestamp;
+
+  let delta = (timestamp-lastTime)/1000;
+  lastTime = timestamp;
+
+  elapsed += delta;
+
+  if (elapsed >= nextBell) {
+    playBell();
+    $("toast").textContent =
+      "Take a gentle breath. Return to your focus.";
+
+    nextBell += interval();
+  }
+
+  if (duration() && elapsed >= duration()) {
+    elapsed = duration();
+    updateDisplay();
+    stopSession();
+
+    $("status").textContent = "Session complete!";
+    $("start").textContent = "Start again";
+    $("toast").textContent =
+      "Well done! Carry this calm with you.";
+
+    return;
+  }
+
+  updateDisplay();
+  animation = requestAnimationFrame(tick);
+}
+
+function startSession() {
+  if (running) {
+    stopSession();
+    return;
+  }
+
+  if (duration() && elapsed >= duration()) {
+    elapsed = 0;
+    nextBell = interval();
+  }
+
+  if (soundOn) {
+    audio = audio || new (
+      window.AudioContext || window.webkitAudioContext
+    )();
+
+    audio.resume();
+  }
+
+  running = true;
+  lastTime = 0;
+
+  $("start").textContent = "Pause session";
+  $("status").textContent =
+    mode === "focus"
+      ? "Stay with your task"
+      : "Rest in the present";
+
+  $("orb").classList.add("running");
+  $("toast").textContent = "One moment at a time.";
+
+  animation = requestAnimationFrame(tick);
+}
+
+$("start").addEventListener("click",startSession);
+
+$("reset").addEventListener("click",() => {
+  stopSession();
+
+  elapsed = 0;
+  nextBell = interval();
+
+  $("start").textContent = "Start session";
+  $("status").textContent = "Ready when you are";
+  $("toast").textContent = "Session reset.";
+
+  updateDisplay();
+});
+
+$("sound").addEventListener("click",() => {
+  soundOn = !soundOn;
+  $("sound").textContent = soundOn ? "♪" : "♪̸";
+  $("toast").textContent =
+    soundOn ? "Bell sound enabled" : "Bell sound muted";
+});
+
+$("interval").addEventListener("change",() => {
+  stopSession();
+  elapsed = 0;
+  nextBell = interval();
+  $("start").textContent = "Start session";
+  updateDisplay();
+});
+
+$("duration").addEventListener("change",() => {
+  stopSession();
+  elapsed = 0;
+  nextBell = interval();
+  $("start").textContent = "Start session";
+  updateDisplay();
+});
+
+$("focusMode").addEventListener("click",() => {
+  mode = "focus";
+  $("focusMode").classList.add("active");
+  $("meditationMode").classList.remove("active");
+  $("status").textContent = running
+    ? "Stay with your task"
+    : "Ready when you are";
+});
+
+$("meditationMode").addEventListener("click",() => {
+  mode = "meditation";
+  $("meditationMode").classList.add("active");
+  $("focusMode").classList.remove("active");
+  $("status").textContent = running
+    ? "Rest in the present"
+    : "Ready when you are";
+});
+
+updateDisplay();
+</script>
+
+</body>
+</html>
